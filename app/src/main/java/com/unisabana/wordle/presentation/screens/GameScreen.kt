@@ -5,14 +5,21 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,8 +33,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+private val CellSize: Dp = 50.dp
+private val CellGap: Dp = 4.dp
+private const val Cols: Int = 5
+private val BoardWidth: Dp = CellSize * Cols + CellGap * (Cols - 1)
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 
@@ -74,12 +88,35 @@ fun GameScreen(){
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
 
-                repeat(7){
+                repeat(6){
                     Row ( horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         repeat(5) {
                             Cell("" , CellType.TRANSPARENT)
                         }
                     }
+                }
+
+                Keyboard(
+                    modifier = Modifier
+                        .width(BoardWidth)
+                        .align(Alignment.CenterHorizontally)
+                )
+
+                Button(
+                    onClick = { },
+                    modifier = Modifier
+                        .width(BoardWidth)
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxWidth()
+                        .padding(top = 12.dp, bottom = 8.dp)
+                        .height(46.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF6AAA65),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("ENVIAR")
                 }
             }
         }
@@ -91,11 +128,6 @@ fun GameScreen(){
 fun PreviewGameScreen(){
     GameScreen()
 }
-
-@Composable
-fun CellAll() {
-}
-
 enum class CellType{
     GREEN,
     YELLOW,
@@ -125,22 +157,74 @@ fun Cell(character: String, blockType:CellType){
 }
 
 @Composable
-fun PreviewCellSuccess(){
-    Column {
-        Row{
-            Cell("H", CellType.GREEN)
-            Cell("E", CellType.GREY)
-            Cell("L", CellType.YELLOW)
-            Cell("L", CellType.GREEN)
-            Cell("O", CellType.TRANSPARENT)
+private fun Keyboard( modifier: Modifier = Modifier) {
+    val row1 = "QWERTYUIOP".toList()
+    val row2 = "ASDFGHJKL".toList()
+    val row3 = "ZXCVBNM".toList()
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        // Fila 1
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            row1.forEach { KeyButton(it.toString(), Modifier.weight(1f)) }
         }
 
-        Row{
-            Cell(" ", CellType.TRANSPARENT)
-            Cell(" ", CellType.TRANSPARENT)
-            Cell(" ", CellType.TRANSPARENT)
-            Cell(" ", CellType.TRANSPARENT)
-            Cell(" ", CellType.TRANSPARENT)
+        // Fila 2 (ligeramente centrada)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Spacer(Modifier.weight(0.5f))
+            row2.forEach { KeyButton(it.toString(), Modifier.weight(1f)) }
+            Spacer(Modifier.weight(0.5f))
+        }
+
+        // Fila 3 + BORRAR a la derecha
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            row3.forEach { KeyButton(it.toString(), Modifier.weight(1f)) }
+            DeleteKey(Modifier.weight(1.5f)) // <- botón borrar más ancho
         }
     }
 }
+
+@Composable
+private fun KeyButton(text: String, modifier: Modifier = Modifier) {
+    Button(
+        onClick = { },
+        modifier = modifier.height(42.dp),
+        shape = RoundedCornerShape(6.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF3A3A3C),
+            contentColor = Color.White
+        ),
+        contentPadding = PaddingValues(0.dp)
+    ) {
+        Text(text)
+    }
+}
+
+@Composable
+private fun DeleteKey(modifier: Modifier = Modifier) {
+    Button(
+        onClick = { },
+        modifier = modifier.height(42.dp),
+        shape = RoundedCornerShape(6.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF3A3A3C),
+            contentColor = Color.White
+        )
+    ) {
+
+    }
+}
+
