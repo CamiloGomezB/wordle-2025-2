@@ -33,9 +33,10 @@ data class ScoreEntry(val name: String, val score: Int)
 
 @Composable
 fun ScoreScreen(
-    scores: List<ScoreEntry>,
     onBack: () -> Unit = {}
 ) {
+
+    var scores = listOf<Int>(0)
     val bg = Color(0xFF121213)
 
     Scaffold(

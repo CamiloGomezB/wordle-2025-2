@@ -26,7 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 private val CellSize: Dp = 50.dp
 private val CellGap: Dp = 4.dp
@@ -46,7 +46,7 @@ private val BoardWidth: Dp = CellSize * Cols + CellGap * (Cols - 1)
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun GameScreen(){
+fun GameScreen(navController: NavHostController) {
     Scaffold (
         containerColor = Color(0xFF000000),
         topBar= {
@@ -126,7 +126,7 @@ fun GameScreen(){
 @Preview(showBackground = true)
 @Composable
 fun PreviewGameScreen(){
-    GameScreen()
+    GameScreen(navController)
 }
 enum class CellType{
     GREEN,
@@ -160,7 +160,7 @@ fun Cell(character: String, blockType:CellType){
 private fun Keyboard( modifier: Modifier = Modifier) {
     val row1 = "QWERTYUIOP".toList()
     val row2 = "ASDFGHJKL".toList()
-    val row3 = "ZXCVBNM".toList()
+    val row3 = "ZXCVBNM⌫".toList()
 
     Column(
         modifier = modifier
@@ -176,7 +176,6 @@ private fun Keyboard( modifier: Modifier = Modifier) {
             row1.forEach { KeyButton(it.toString(), Modifier.weight(1f)) }
         }
 
-        // Fila 2 (ligeramente centrada)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -186,13 +185,13 @@ private fun Keyboard( modifier: Modifier = Modifier) {
             Spacer(Modifier.weight(0.5f))
         }
 
-        // Fila 3 + BORRAR a la derecha
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             row3.forEach { KeyButton(it.toString(), Modifier.weight(1f)) }
-            DeleteKey(Modifier.weight(1.5f)) // <- botón borrar más ancho
+            DeleteKey(Modifier.weight(1.5f))
         }
     }
 }

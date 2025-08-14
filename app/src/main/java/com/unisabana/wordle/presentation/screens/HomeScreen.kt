@@ -16,7 +16,8 @@ import androidx.compose.ui.unit.sp
 import com.unisabana.wordle.presentation.components.Cell
 import com.unisabana.wordle.presentation.components.CellType
 
-/* ======================= HOME ======================= */
+private val WordleGreen = Color(0xFF6AAA64) // verde “normal” de Wordle
+
 
 @Composable
 fun HomeScreen(
@@ -44,12 +45,15 @@ fun HomeScreen(
 
             Spacer(Modifier.height(32.dp))
 
-            // Botones
             Button(
                 onClick = onPlayClick,
                 modifier = Modifier
                     .fillMaxWidth(0.85f)
-                    .height(40.dp)
+                    .height(40.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = WordleGreen,
+                        contentColor = Color.White,
+                    )
             ) { Text("Let's play!") }
 
             Spacer(Modifier.height(12.dp))
@@ -58,7 +62,11 @@ fun HomeScreen(
                 onClick = onLeaderboardClick,
                 modifier = Modifier
                     .fillMaxWidth(0.85f)
-                    .height(40.dp)
+                    .height(40.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = WordleGreen,
+                        contentColor = Color.White,
+                    )
             ) { Text("Leaderboard") }
         }
     }
