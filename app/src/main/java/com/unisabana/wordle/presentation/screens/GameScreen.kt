@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 private val CellSize: Dp = 50.dp
 private val CellGap: Dp = 4.dp
@@ -126,6 +127,7 @@ fun GameScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewGameScreen(){
+    val navController = rememberNavController()
     GameScreen(navController)
 }
 enum class CellType{
