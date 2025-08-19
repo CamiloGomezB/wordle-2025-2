@@ -1,4 +1,4 @@
-package com.unisabana.wordle.presentation.screens
+package com.unisabana.wordle.presentation.screens.game
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
@@ -47,7 +49,10 @@ private val BoardWidth: Dp = CellSize * Cols + CellGap * (Cols - 1)
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun GameScreen(navController: NavHostController) {
+fun GameScreen(
+    navController: NavHostController,
+    gameViewModel: GameViewModel = viewModel()
+) {
     Scaffold (
         containerColor = Color(0xFF000000),
         topBar= {
@@ -78,51 +83,54 @@ fun GameScreen(navController: NavHostController) {
             )
         },
 
-    )       {
+        )       {
             innerPadding ->
-            Column (modifier     = Modifier
-                .fillMaxSize()
-                .background(Color.Black)
-                .padding(innerPadding)
-                .padding(top = 55.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
+        Column (modifier     = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .padding(innerPadding)
+            .padding(top = 55.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
 
-                repeat(6){
-                    Row ( horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        repeat(5) {
-                            Cell("" , CellType.TRANSPARENT)
-                        }
+            repeat(6){
+                Row ( horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    repeat(5) {
+                        Cell("" , CellType.TRANSPARENT)
                     }
                 }
+            }
 
-                Keyboard(
-                    modifier = Modifier
-                        .width(BoardWidth)
-                        .align(Alignment.CenterHorizontally)
+            Keyboard(
+                modifier = Modifier
+                    .width(BoardWidth)
+                    .align(Alignment.CenterHorizontally),
+                gameViewModel::onRemoveLetter,
+                gameViewModel::onKeyPressed
+
+            )
+
+            Button(
+                onClick = { },
+                modifier = Modifier
+                    .width(BoardWidth)
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, bottom = 8.dp)
+                    .height(46.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6AAA65),
+                    contentColor = Color.White
                 )
-
-                Button(
-                    onClick = { },
-                    modifier = Modifier
-                        .width(BoardWidth)
-                        .align(Alignment.CenterHorizontally)
-                        .fillMaxWidth()
-                        .padding(top = 12.dp, bottom = 8.dp)
-                        .height(46.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF6AAA65),
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text("ENVIAR")
-                }
+            ) {
+                Text("ENVIAR")
             }
         }
-    
     }
+
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -159,7 +167,9 @@ fun Cell(character: String, blockType:CellType){
 }
 
 @Composable
-private fun Keyboard( modifier: Modifier = Modifier) {
+private fun Keyboard( modifier: Modifier = Modifier,
+                      onRemove: () -> Unit,
+                      onKeyPressed: (Char) -> Unit) {
     val row1 = "QWERTYUIOP".toList()
     val row2 = "ASDFGHJKL".toList()
     val row3 = "ZXCVBNM⌫".toList()

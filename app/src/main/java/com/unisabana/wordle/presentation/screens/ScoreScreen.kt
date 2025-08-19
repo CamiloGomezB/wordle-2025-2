@@ -29,14 +29,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+
 data class ScoreEntry(val name: String, val score: Int)
 
 @Composable
 fun ScoreScreen(
+    scores: List<ScoreEntry> = emptyList(),
     onBack: () -> Unit = {}
 ) {
-
-    var scores = listOf<Int>(0)
     val bg = Color(0xFF121213)
 
     Scaffold(
@@ -66,7 +66,7 @@ fun ScoreScreen(
                 .padding(inner)
                 .fillMaxSize()
                 .background(bg),
-            contentAlignment = Alignment.Center // 🔹 Centrado vertical y horizontal
+            contentAlignment = Alignment.Center
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -87,13 +87,13 @@ fun ScoreScreen(
     }
 }
 
-/* ---------- Preview con datos de ejemplo ---------- */
+
+
 
 @Preview(showBackground = true, backgroundColor = 0xFF121213)
 @Composable
 fun PreviewScoreScreen() {
     val demo = listOf(
-        ScoreEntry("Name one", 120),
         ScoreEntry("Name two", 115),
         ScoreEntry("Name one", 110),
         ScoreEntry("Name two", 108),

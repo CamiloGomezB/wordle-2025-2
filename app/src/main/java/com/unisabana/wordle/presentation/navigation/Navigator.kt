@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.unisabana.wordle.presentation.screens.GameScreen
+import com.unisabana.wordle.presentation.screens.game.GameScreen
 import com.unisabana.wordle.presentation.screens.HomeScreen
 import com.unisabana.wordle.presentation.screens.ScoreScreen
 import kotlinx.serialization.Serializable
